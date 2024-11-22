@@ -3,8 +3,6 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morganMiddleware from './logger/morgan.logger';
 import { rateLimit } from 'express-rate-limit';
-import { ApiError } from './utils/api-error';
-import errorHandler from './middlewares/error-handler.middleware';
 import { configDotenv } from 'dotenv';
 configDotenv()
 
@@ -22,10 +20,10 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   handler: (_, __, ___, options) => {
-    throw new ApiError(
-      options.statusCode || 500,
-      `Too many requests: limit of ${options.max} per ${options.windowMs / 60000} minutes.`
-    );
+    // throw new Error(
+    //   options.statusCode || 500,
+    //   `Too many requests: limit of ${options.max} per ${options.windowMs / 60000} minutes.`
+    // );
   }
 }));
 
@@ -44,8 +42,5 @@ app.get('/health', (_: Request, res: Response) => {
 app.use((_: Request, res) => {
   res.status(404).json({ error: 'API endpoint is not valid.' });
 });
-
-// Error handler
-app.use(errorHandler);
 
 export { app };

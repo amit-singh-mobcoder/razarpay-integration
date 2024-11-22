@@ -14,7 +14,6 @@ const startServer = async () => {
     try {
       await db.connect();
       const server = app.listen(PORT, () => {
-        logger.info(`📑 Visit the documentation at: http://localhost:${PORT}/api-docs`);
         logger.info(`Server is listening at http://localhost:${PORT}`);
       });
   
